@@ -23,14 +23,14 @@ def historico_ordem_servico(request):
     return render(request, 'ordem_servico/historico_ordem_servico.html', {'ordens_servico': ordens_servico})
 
 def emitir_planilha(request, mes, ano):
-    # Consulte as emissões de ordem de serviço para o mês e ano especificados
+    
     emissao_ordens_servico = EmissaoOrdemServico.objects.filter(data__month=mes, data__year=ano)
 
-    # Crie uma resposta HTTP com o conteúdo da planilha
+    
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = f'attachment; filename="ordens_servico_{mes}_{ano}.csv"'
 
-    # Crie um escritor CSV e escreva os dados das ordens de serviço
+    
     writer = csv.writer(response)
     writer.writerow(['Empresa', 'Serviço', 'Produto', 'Data'])
     for emissao in emissao_ordens_servico:
