@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import OrdemServicoForm
 from .models import EmissaoOrdemServico
-import csv
-from django.http import HttpResponse
 
 
 def criar_ordem_servico(request):
@@ -10,9 +8,8 @@ def criar_ordem_servico(request):
         form = OrdemServicoForm(request.POST)
         if form.is_valid():
             empresa = form.cleaned_data['loja']
-            servico = form.cleaned_data['servico']
-            data = form.cleaned_data['data']
-            EmissaoOrdemServico.objects.create(empresa=empresa, servico=servico, data=data)
+            servico = form.cleaned_data['servico']         
+            EmissaoOrdemServico.objects.create(empresa=empresa, servico=servico)
             return redirect('ordem_servico_confirmacao') # Redirecione para a página de confirmação
     else:
         form = OrdemServicoForm()

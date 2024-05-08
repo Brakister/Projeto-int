@@ -21,7 +21,7 @@ class EmissaoOrdemServico(models.Model):
     empresa = models.CharField(max_length=100)
     servico = models.CharField(max_length=100)
     produto = models.CharField(max_length=100)
-    data = models.DateField()
+    data = models.DateTimeField(auto_now=True) 
 
     
     def __str__(self):
