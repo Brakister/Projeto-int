@@ -3,4 +3,8 @@ from .models import Loja, Servico
 
 class OrdemServicoForm(forms.Form):
     loja = forms.ModelChoiceField(queryset=Loja.objects.all())
-    servicos = forms.ModelMultipleChoiceField(queryset=Servico.objects.all())
+    servico = forms.ModelChoiceField(queryset=Servico.objects.all())
+    data = forms.DateField()
+
+def salvar_ordem_servico(request, form):
+    servico = form.cleaned_data['servicos']

@@ -10,10 +10,9 @@ def criar_ordem_servico(request):
         form = OrdemServicoForm(request.POST)
         if form.is_valid():
             empresa = form.cleaned_data['loja']
-            servico = form.cleaned_data['Servico']
-            produto = form.cleaned_data['produto']
+            servico = form.cleaned_data['servico']
             data = form.cleaned_data['data']
-            EmissaoOrdemServico.objects.create(empresa=empresa, servico=servico, produto=produto, data=data)
+            EmissaoOrdemServico.objects.create(empresa=empresa, servico=servico, data=data)
             return redirect('criar_ordem_servico')  # Redirecione para a mesma página após o envio do formulário
     else:
         # Lógica para renderizar o formulário de criação de ordem de serviço
