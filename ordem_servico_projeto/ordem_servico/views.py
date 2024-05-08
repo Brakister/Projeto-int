@@ -1,35 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import OrdemServicoForm
-from django.http import HttpResponse
 from .models import EmissaoOrdemServico
 import csv
-
-def criar_ordem_servico(request):
-    if request.method == 'POST':
-        form = OrdemServicoForm(request.POST)
-        if form.is_valid():
-            # Processar o formulário aqui
-            # Aqui você pode acessar os dados do formulário usando form.cleaned_data
-            # e criar a ordem de serviço no banco de dados
-            return render(request, 'ordem_servico/ordem_servico_confirmacao.html')
-    else:
-        form = OrdemServicoForm()
-    return render(request, 'ordem_servico/criar_ordem_servico.html', {'form': form})
-
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
 
 def criar_ordem_servico(request):
     if request.method == 'POST':
         # Obtenha os dados do formulário e salve no novo modelo
-        empresa = request.POST.get('empresa')
-        servico = request.POST.get('servico')
-        produto = request.POST.get('produto')
-        data = request.POST.get('data')
-        EmissaoOrdemServico.objects.create(empresa=empresa, servico=servico, produto=produto, data=data)
-        return redirect('criar_ordem_servico')  # Redirecione para a mesma página após o envio do formulário
+        form = OrdemServicoForm(request.POST)
+        if form.is_valid():
+            empresa = form.cleaned_data['loja']
+            servico = form.cleaned_data['Servico']
+            produto = form.cleaned_data['produto']
+            data = form.cleaned_data['data']
+            EmissaoOrdemServico.objects.create(empresa=empresa, servico=servico, produto=produto, data=data)
+            return redirect('criar_ordem_servico')  # Redirecione para a mesma página após o envio do formulário
     else:
         # Lógica para renderizar o formulário de criação de ordem de serviço
-        ...
+        form = OrdemServicoForm()
+    return render(request, 'ordem_servico/criar_ordem_servico.html', {'form': form})
+
 
 def emitir_planilha(request, mes, ano):
     # Consulte as emissões de ordem de serviço para o mês e ano especificados
@@ -46,3 +36,4 @@ def emitir_planilha(request, mes, ano):
         writer.writerow([emissao.empresa, emissao.servico, emissao.produto, emissao.data])
 
     return response
+
