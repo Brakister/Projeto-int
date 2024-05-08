@@ -14,7 +14,7 @@ class Servico(models.Model):
     preco_max = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.nome
+        return self.codigo
 
 
 class EmissaoOrdemServico(models.Model):
